@@ -42,6 +42,7 @@ done < ${ZEUS_ROOT}/zeus.env
 if [[ -z $1 ]]
 then
   ${ZEUS_ROOT}/function/help.sh
+  exit 0
 fi
 
 # 针对命令分组

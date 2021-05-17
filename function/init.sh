@@ -33,7 +33,7 @@ then
   chmod 760 ${ZEUS_ROOT}/register/*
 fi
 
-if [[ -n $(ls *.env) ]]
+if [[ -n $(ls ${ZEUS_ROOT}/*.env) ]]
 then
-  chmod 640 *.env
+  chmod 640 ${ZEUS_ROOT}/*.env
 fi
