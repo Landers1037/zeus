@@ -6,8 +6,20 @@
 
 # 首先必须保证应用目录存在
 # 程序运行的目录在最开始注册 所有shell共享此变量
-zeus_pwd=$(pwd)
-export ZEUS_ROOT=$zeus_pwd
+
+# 在任意目录使用zeus时需要下指定zeus_root即zeus的运行时目录
+USR_ADD_ZEUS_ROOT=/renj.io/zeus
+
+if [[ -z ${ZEUS_ROOT} ]];then
+  # 判断运行目录是否就是zeus目录
+  current_dir=$(pwd)
+  if [[ -d ${current_dir}/service ]];then
+    export ZEUS_ROOT=${current_dir}
+  else
+    export ZEUS_ROOT=${USR_ADD_ZEUS_ROOT}
+  fi
+fi
+
 # 初始化脚本权限
 ${ZEUS_ROOT}/function/init.sh
 # 加载所有环境变量
