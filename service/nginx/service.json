@@ -1,0 +1,18 @@
+{
+  "zeus_app_name": "",
+  "zeus_app_version": "",
+  "zeus_app_des": "",
+  "zeus_app_path": "",
+  "zeus_app_type": "",
+  "zeus_control": {
+    "start": [],
+    "stop": [],
+    "restart": [],
+    "status": [],
+    "clear": [],
+    "update": [],
+    "backup": [],
+    "install": [],
+    "uninstall": []
+  }
+}
