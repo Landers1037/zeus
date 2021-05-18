@@ -54,15 +54,26 @@ run)
   ${ZEUS_ROOT}/function/run_server.sh
   ;;
 reg|register)
-  echo "开始注册服务"
-  echo -n "输入需要注册的服务名"
-  read app
+  app=$2
+  # if empty use read
+  if [[ -z $app ]];then
+    echo "开始注册服务"
+    echo -n "输入需要注册的服务名"
+    read app
+  else
+    echo "开始注册服务${app}"
+  fi
   ${ZEUS_ROOT}/function/register_app.sh $app
   ;;
 del|delete)
-  echo "开始卸载服务"
-  echo -n "输入需要卸载的服务名"
-  read app
+  app=$2
+  if [[ -z $app ]];then
+    echo "开始卸载服务"
+    echo -n "输入需要卸载的服务名"
+    read app
+  else
+    echo "开始卸载服务${app}"
+  fi
   ${ZEUS_ROOT}/function/delete_app.sh $app
   ;;
 start)

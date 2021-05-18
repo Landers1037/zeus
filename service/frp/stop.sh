@@ -10,11 +10,12 @@ do
   fi
 done
 
-if [[ ! -f ${ZEUS_NGINX_CONF}/home.conf ]];then
+conf=home.conf
+if [[ ! -f ${ZEUS_NGINX_CONF}/${conf} ]];then
   echo "服务配置文件不存在"
   exit 0
 else
-  mv ${ZEUS_NGINX_CONF}/home.conf ${ZEUS_NGINX_CONF}/home.conf.stop
+  mv ${ZEUS_NGINX_CONF}/${conf} ${ZEUS_NGINX_CONF}/${conf}.stop
   nginx -s reload
   exit 0
 fi

@@ -7,7 +7,7 @@ if [[ -z $app ]];then
   exit 1
 fi
 
-echo "开始卸载服务${app}"
+echo "需要卸载的服务为${app}"
 app_service_dir=${ZEUS_ROOT}/service
 if [[ ! -d ${app_service_dir}/$app ]];then
   echo "服务${app}不存在"

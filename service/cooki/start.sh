@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
-# mgekfile is nginx based
-
 # try find nginx conf
-conf=mgekfile.conf
+conf=cooki.conf
 if [[ ! -f ${ZEUS_NGINX_CONF}/${conf}.stop && ! -f ${ZEUS_NGINX_CONF}/${conf} ]];then
-  echo "服务配置文件不存在"
+  echo ""
   exit 1
 elif [[ -f ${ZEUS_NGINX_CONF}/${conf} ]]; then
-    nginx -s reload
-    exit 0
+  nginx -s reload
 else
   mv ${ZEUS_NGINX_CONF}/${conf}.stop ${ZEUS_NGINX_CONF}/${conf}
   nginx -s reload
