@@ -76,6 +76,15 @@ del|delete)
   fi
   ${ZEUS_ROOT}/function/delete_app.sh $app
   ;;
+conf|config)
+  ${ZEUS_ROOT}/function/get_config.sh
+  ;;
+temp|template)
+  ${ZEUS_ROOT}/function/show_template.sh
+  ;;
+edit)
+  ${ZEUS_ROOT}/function/edit.sh $2
+  ;;
 start)
   app=$2
   if [[ -z "$app" ]];then
@@ -111,6 +120,9 @@ status)
   else
     ${ZEUS_ROOT}/function/status_app.sh $app
   fi
+  ;;
+show)
+  ${ZEUS_ROOT}/function/show_app.sh
   ;;
 *)
   ${ZEUS_ROOT}/function/help.sh
