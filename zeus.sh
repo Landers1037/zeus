@@ -109,7 +109,10 @@ restart)
     echo "服务名为空"
     exit 0
   else
-    ${ZEUS_ROOT}/function/restart_app.sh $app
+    # now is just stop and start
+    ${ZEUS_ROOT}/function/stop_app.sh $app
+    sleep 1
+    ${ZEUS_ROOT}/function/start_app.sh $app
   fi
   ;;
 status)
