@@ -55,6 +55,33 @@ function get_system_status()
   opt "${START}${BGSYS}m${data}${END}"
 }
 
+function zeus_powered()
+{
+  msg="${START}${GREEN}mPOWERED BY ZEUS ${END}"
+  for i in {1..40}
+  do
+    echo -n "="
+  done
+  echo ""
+  echo -n "+"
+  echo -n "$(printf %-38s " ")"
+  echo -n "+"
+
+  echo ""
+  echo -e "+$(printf %-11s " ")${msg}$(printf %-11s " ")+"
+
+  echo -n "+"
+  echo -n "$(printf %-38s " ")"
+  echo -n "+"
+  
+  echo ""
+  for i in {1..40}
+  do
+    echo -n "="
+  done
+  echo ""
+}
+
 # 输出服务信息
 function get_app_status()
 {
@@ -68,11 +95,22 @@ function get_app_status()
     opt "${START}${BGSYS}m注册的应用为空${END}"
   fi
   # 不为空开始遍历
+  # 获取最长的字符串
+  max_len=0
   for app in $apps
   do
-    status=$(${service_dir}/${app}/status.sh > /dev/null)
+    if [[ ${#app} -gt ${max_len} ]];then
+      max_len=${#app}
+    fi
+  done
+  # 格式化字符串
+  for app in $apps
+  do
+    ${service_dir}/${app}/status.sh > /dev/null
+    status=$?
     fmt_banner="${START}${BGAPP};${WHITE}m APP ${END}"
-    fmt_app="${START}${BGWHITE};${BLACK}m ${app} ${END}"
+    app_str="$(printf %-${max_len}s ${app})"
+    fmt_app="${START}${BGWHITE};${BLACK}m ${app_str} ${END}"
     if [[ $status == 0 ]];then
       fmt_status="${START}${GREEN};${HIGHLIGHT}m ALIVE ${END}"
       opt "${fmt_banner}${fmt_app} ${fmt_status}"
@@ -84,6 +122,7 @@ function get_app_status()
   done
   opt "${START}${BGSTOP};${WHITE}m status check ends. ${END}"
   opt "wating for the next round."
+  zeus_powered
 }
 
 # 开始查询
@@ -95,24 +134,77 @@ get_system_status()
   cpu=$(top -b -n1 | fgrep "Cpu(s)" | tail -1 | awk -F 'id,' '{split($1, vs, ",");v=vs[length(vs)];sub(/\s+/, "" ,v);sub(/\s+/, "", v);printf "%d", 100-v;}')%
   mem=$(free -m | awk -F '[ :]+' 'NR==2{printf "%d", ($3)/$2*100}')%
   disk=$(df -h | grep /$ | awk '{print $5}')
-  opt "${START}${WHITE}mcheck system info. ${END}"
+  opt "${START}${PURPLE}mcheck system info. ${END}"
   opt "${START}${BGSYS};${WHITE}m system ${END} USER: ${START}${WHITE}m ${user} ${END}"
   opt "${START}${BGSYS};${WHITE}m system ${END} CPU : ${START}${WHITE}m ${cpu} ${END}"
   opt "${START}${BGSYS};${WHITE}m system ${END} MEM : ${START}${WHITE}m ${mem} ${END}"
   opt "${START}${BGSYS};${WHITE}m system ${END} DISK: ${START}${WHITE}m ${disk} ${END}"
 }
 # 服务启动信息 输入环境变量 日志路径 版本信息
+function print_split()
+{
+  STR="#"
+  for i in {1..20}
+  do
+    echo -n "$STR"
+  done
+  echo -n "ZEUS"
+  for i in {1..20}
+  do
+    echo -n "$STR"
+  done
+  echo ""
+}
+
+function init_config()
+{
+  echo "加载配置文件..."
+  if [[ ! -f ${ZEUS_ROOT}/zeus.env ]];then
+    echo "配置文件${ZEUS_ROOT}/zeus.env不存在"
+    exit 1
+  else
+    echo "从配置文件${ZEUS_ROOT}/zeus.env中加载配置成功"
+  fi
+  echo "工作目录${ZEUS_ROOT}"
+  echo "服务目录${ZEUS_SERVICE_ROOT}"
+}
+
+function init_log()
+{
+  echo "初始化日志文件"
+  echo "默认路径${ZEUS_ROOT}/run.log"
+  if [[ -z ${ZEUS_LOG_COVER} || ${ZEUS_LOG_COVER} == 0 ]];then
+    echo "日志模式: 追加"
+  else
+    echo "日志模式: 覆盖"
+    echo "" > ${ZEUS_ROOT}/run.log
+  fi
+}
+
+function setup()
+{
+  opt "${START}${BGRUN};${BLACK}m ZEUS SERVER IS RUNNING ${END}"
+  opt "ZEUS version is: ${START}${CYAN}m${ZEUS_VERSION}${END}"
+  opt "ZEUS default duration is: ${START}${CYAN}m${ZEUS_DURATION}s${END}"
+  opt "SYSTEM INFO: ${START}${CYAN}m$(uname -o) $(uname -m)${END}"
+  opt "Kernel Version: ${START}${CYAN}m$(uname -v)${END}"
+}
+
+function start_running()
+{
+  opt "start at time: ${START}${CYAN}m$(date)${END}"
+}
 
 function run_server()
 {
   ${ZEUS_ROOT}/function/print_logo.sh
   echo ""
-  echo "初始化日志文件"
-  echo "默认路径${ZEUS_ROOT}/run.log"
-
-  opt "${START}${BGRUN};${BLACK}m ZEUS SERVER IS RUNNING ${END}"
-  opt "ZEUS default duration is: ${START}${CYAN}m${ZEUS_DURATION}s${END}"
-  opt "start at time: ${START}${CYAN}m$(date)${END}"
+  print_split
+  init_config
+  init_log
+  print_split
+  setup
+  start_running
   while [ 1 ]
   do
     get_app_status
