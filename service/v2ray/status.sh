@@ -1,7 +1,7 @@
 #!/bin/bash
 # cmds for zeus apps
-app_dir=${ZEUS_APP_ROOT}/blog
-app_name=app_blog
+
+app_name=v2ray
 status=$(ps ax|grep ${app_name}|grep -v "status.sh"|grep -v grep)
 if [[ -n ${status} ]];then
   exit 0

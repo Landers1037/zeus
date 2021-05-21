@@ -181,6 +181,34 @@ function init_log()
   fi
 }
 
+function stop_log_rotate()
+{
+  for i in {1..100}
+  do
+    pid=$(ps ax|grep ${ZEUS_ROOT}/function/log_rotate.sh|grep -v grep|awk '{print $1}')
+    if [ -n "$pid" ];then
+      kill -9 "${pid}" > /dev/null
+    else
+      break
+    fi
+  done
+  echo "server stopped"
+  exit 0
+}
+
+function register_stop_server()
+{
+  trap stop_log_rotate SIGINT
+  trap stop_log_rotate INT
+  trap stop_log_rotate SIGQUIT
+  trap stop_log_rotate SIGTERM
+}
+
+function init_log_rotate()
+{
+  ${ZEUS_ROOT}/function/log_rotate.sh > /dev/null &
+}
+
 function setup()
 {
   opt "${START}${BGRUN};${BLACK}m ZEUS SERVER IS RUNNING ${END}"
@@ -202,6 +230,8 @@ function run_server()
   print_split
   init_config
   init_log
+  init_log_rotate
+  register_stop_server
   print_split
   setup
   start_running
