@@ -121,7 +121,7 @@ function get_app_status()
     sleep 0.05
   done
   opt "${START}${BGSTOP};${WHITE}m status check ends. ${END}"
-  opt "wating for the next round."
+  opt "waiting for the next round."
   zeus_powered
 }
 
