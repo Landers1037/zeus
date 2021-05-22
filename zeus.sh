@@ -58,9 +58,9 @@ watch|w)
 
   if [[ ${ZEUS_WATCH_DOG} == 1 ]];then
     if [[ ${args_len} -gt 0 ]];then
-      ${ZEUS_ROOT}/function/run_server_custom_dynamic.sh $args
+      watch -n ${ZEUS_DURATION} --color -t ${ZEUS_ROOT}/function/run_server_custom_dynamic.sh $args
     else
-      ${ZEUS_ROOT}/function/run_server_dynamic.sh
+      watch -n ${ZEUS_DURATION} --color -t ${ZEUS_ROOT}/function/run_server_dynamic.sh
     fi
   else
     if [[ ${args_len} -gt 0 ]];then

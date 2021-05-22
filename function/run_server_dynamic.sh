@@ -40,6 +40,7 @@ BGWHITE=47
 # 重写一个输出函数 用于确定是否保存日志文件
 # $1 type $2 str
 # 数据的真实高亮在函数传入时已经格式化完毕
+# 动态打印 定时清除本行shell打印结果
 function opt()
 {
   # 获取时间戳
@@ -181,34 +182,6 @@ function init_log()
   fi
 }
 
-function stop_log_rotate()
-{
-  for i in {1..100}
-  do
-    pid=$(ps ax|grep ${ZEUS_ROOT}/function/log_rotate.sh|grep -v grep|awk '{print $1}')
-    if [ -n "$pid" ];then
-      kill -9 "${pid}" > /dev/null
-    else
-      break
-    fi
-  done
-  echo "server stopped"
-  exit 0
-}
-
-function register_stop_server()
-{
-  trap stop_log_rotate SIGINT
-  trap stop_log_rotate INT
-  trap stop_log_rotate SIGQUIT
-  trap stop_log_rotate SIGTERM
-}
-
-function init_log_rotate()
-{
-  ${ZEUS_ROOT}/function/log_rotate.sh > /dev/null &
-}
-
 function setup()
 {
   opt "${START}${BGRUN};${BLACK}m ZEUS SERVER IS RUNNING ${END}"
@@ -229,18 +202,11 @@ function run_server()
   echo ""
   print_split
   init_config
-  init_log
-  init_log_rotate
-  register_stop_server
   print_split
   setup
   start_running
-  while [ 1 ]
-  do
-    get_app_status
-    get_system_status
-    sleep ${ZEUS_DURATION}
-  done
+  get_app_status
+  get_system_status
 }
 
 # 支持的参数

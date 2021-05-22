@@ -196,7 +196,7 @@ function stop_log_rotate()
   do
     pid=$(ps ax|grep ${ZEUS_ROOT}/function/log_rotate.sh|grep -v grep|awk '{print $1}')
     if [ -n "$pid" ];then
-      kill -9 "${pid}" > /dev/null
+      kill -9 "${pid}" > /dev/null 2>&1
     else
       break
     fi
@@ -215,7 +215,10 @@ function register_stop_server()
 
 function init_log_rotate()
 {
-  ${ZEUS_ROOT}/function/log_rotate.sh > /dev/null &
+  pid=$(ps ax|grep log_rotate|grep -v grep)
+  if [[ -z ${pid} ]];then
+    ${ZEUS_ROOT}/function/log_rotate.sh > /dev/null &
+  fi
 }
 
 function setup()
