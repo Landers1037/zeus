@@ -50,8 +50,25 @@ case $1 in
 help)
   ${ZEUS_ROOT}/function/help.sh
   ;;
-run)
-  ${ZEUS_ROOT}/function/run_server.sh
+watch|w)
+  # 根据配置分发不同的监听方式
+  args=$*
+  args=${args#*" "}
+  args_len=$(expr $# - 1)
+
+  if [[ ${ZEUS_WATCH_DOG} == 1 ]];then
+    if [[ ${args_len} -gt 0 ]];then
+      ${ZEUS_ROOT}/function/run_server_custom_dynamic.sh $args
+    else
+      ${ZEUS_ROOT}/function/run_server_dynamic.sh
+    fi
+  else
+    if [[ ${args_len} -gt 0 ]];then
+      ${ZEUS_ROOT}/function/run_server_custom.sh $args
+    else
+      ${ZEUS_ROOT}/function/run_server.sh
+    fi
+  fi
   ;;
 reg|register)
   app=$2
@@ -85,7 +102,7 @@ temp|template)
 edit)
   ${ZEUS_ROOT}/function/edit.sh $2
   ;;
-start)
+start|run)
   app=$2
   if [[ -z "$app" ]];then
     echo "服务名为空"

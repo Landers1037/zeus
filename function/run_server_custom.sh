@@ -40,6 +40,13 @@ BGWHITE=47
 # 重写一个输出函数 用于确定是否保存日志文件
 # $1 type $2 str
 # 数据的真实高亮在函数传入时已经格式化完毕
+
+# 默认传入参数数组应该为app 当app不存在时退出
+apps=$*
+if [[ -z ${apps} ]];then
+  exit 1
+fi
+
 function opt()
 {
   # 获取时间戳
@@ -87,8 +94,6 @@ function get_app_status()
 {
   opt "${START}${BGSTART};${WHITE}m start to get status of APPS. ${END}"
   service_dir=$ZEUS_ROOT/service
-  #  apps=$(find $service_dir/* -maxdepth 0 -type d)
-  apps=$(ls ${service_dir})
   # 过滤文件夹
   # 遍历所有注册的服务
   if [[ -z "$apps" ]];then
@@ -99,6 +104,10 @@ function get_app_status()
   max_len=0
   for app in $apps
   do
+    if [[ ! -d ${service_dir}/${app} ]];then
+      opt "${START}${BGRED};${WHITE}m 服务${app}不存在 异常退出 ${END}"
+      exit 1
+    fi
     if [[ ${#app} -gt ${max_len} ]];then
       max_len=${#app}
     fi

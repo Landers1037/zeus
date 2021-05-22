@@ -14,11 +14,12 @@ template 显示注册服务模板
 edit     编辑模板和环境变量
 
 快捷命令：
-run      监听服务
+watch    监听服务
 config   查看配置
 start    启动服务
 stop     停止服务
 status   查看状态
+restart  重启服务
 show     查看服务
 log      查看日志
 update   更新服务

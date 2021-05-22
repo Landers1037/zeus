@@ -10,7 +10,7 @@ do
   fi
 done
 
-conf=home.conf
+conf=frp.conf
 if [[ ! -f ${ZEUS_NGINX_CONF}/${conf} ]];then
   echo "服务配置文件不存在"
   exit 0
