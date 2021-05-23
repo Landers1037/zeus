@@ -7,7 +7,7 @@ conf2=jjservice.conf
 if [[ ! -f ${ZEUS_NGINX_CONF}/${conf}.stop && ! -f ${ZEUS_NGINX_CONF}/${conf} ]];then
   echo "服务配置文件不存在"
   exit 1
-elif [[ -f ${ZEUS_NGINX_CONF}/${conf} ]]; then
+elif [[ -f ${ZEUS_NGINX_CONF}/${conf} && -f ${ZEUS_NGINX_CONF}/${conf2} ]]; then
     nginx -s reload
     exit 0
 else
