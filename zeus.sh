@@ -141,8 +141,24 @@ status)
     ${ZEUS_ROOT}/function/status_app.sh $app
   fi
   ;;
+clear)
+  # use for clear log|cache
+  app=$2
+  if [[ -z "$app" ]];then
+    echo "服务名为空"
+    exit 0
+  else
+    ${ZEUS_ROOT}/function/clear_app.sh $app
+    if [[ $? == 0 ]];then
+      echo "清理完毕"
+    else
+      echo "清理失败"
+    fi
+  fi
+  ;;
 show)
-  ${ZEUS_ROOT}/function/show_app.sh
+  app=$2
+  ${ZEUS_ROOT}/function/show_app.sh $app
   ;;
 *)
   ${ZEUS_ROOT}/function/help.sh
