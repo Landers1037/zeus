@@ -2,7 +2,7 @@
 # cmds for zeus apps
 
 app_name=v2ray
-status=$(ps ax|grep ${app_name}|grep -v "status.sh"|grep -v grep)
+status=$(ps ax|grep ${app_name}|grep -v zeus|grep -v grep)
 if [[ -n ${status} ]];then
   exit 0
 else

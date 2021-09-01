@@ -17,7 +17,7 @@ if [[ ! -f ${app_dir}/start.sh ]];then
 fi
 
 # try start app
-bash ${app_dir}/start.sh
+${app_dir}/start.sh > /dev/null
 if [[ $? != 0 ]];then
   echo "服务启动异常"
   exit 1

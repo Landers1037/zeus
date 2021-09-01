@@ -16,7 +16,7 @@ if [[ ! -f ${app_dir}/status.sh ]];then
   exit 1
 fi
 
-${app_dir}/status.sh
+${app_dir}/status.sh > /dev/null
 if [[ $? == 0 ]];then
   echo "服务正在运行"
 else

@@ -3,7 +3,7 @@
 
 app_dir=${ZEUS_APP_ROOT}/frp
 app_name=frps
-status=$(ps ax|grep ${app_name}|grep -v "status.sh"|grep -v grep)
+status=$(ps ax|grep ${app_name}|grep -v zeus|grep -v grep)
 if [[ -n ${status} ]];then
   exit 0
 else

@@ -16,8 +16,10 @@ if [[ ! -f ${app_dir}/stop.sh ]];then
 fi
 
 # try stop app
-bash ${app_dir}/stop.sh
-if [[ $? != 0 ]];then
+# 对137 kill 9退出码单独判断
+${app_dir}/stop.sh > /dev/null
+exit=$?
+if [[ $exit != 0 && $exit != 137 ]];then
   echo "服务停止异常"
   exit 1
 else

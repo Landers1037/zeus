@@ -5,7 +5,7 @@ conf=resume.conf
 app_dir=${ZEUS_APP_ROOT}/resume
 app_name=nginx
 
-status=$(ps ax|grep ${app_name}|grep -v "status.sh"|grep -v grep)
+status=$(ps ax|grep ${app_name}|grep -v zeus|grep -v grep)
 if [[ -n ${status} && -f ${ZEUS_NGINX_CONF}/${conf} && ! -f ${ZEUS_NGINX_CONF}/${conf}.stop ]];then
   exit 0
 else

@@ -13,7 +13,7 @@ if [[ ! -d ${app_service_dir}/$app ]];then
 fi
 
 # 直接执行clear.sh
-bash ${app_service_dir}/$app/clear.sh
+${app_service_dir}/$app/clear.sh
 if [[ $? == 0 ]];then
   exit 0
 else

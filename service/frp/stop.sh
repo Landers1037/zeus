@@ -2,7 +2,7 @@
 
 for i in {1..100}
 do
-  pid=$(ps ax|grep frps|grep -v grep|sed -n '1P'|awk '{print $1}')
+  pid=$(ps ax|grep frps|grep -v grep|grep -v zeus|sed -n '1P'|awk '{print $1}')
   if [[ -z $pid ]];then
     break
   else
