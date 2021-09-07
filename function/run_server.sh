@@ -131,7 +131,7 @@ function get_app_status()
 get_system_status()
 {
   user=$(whoami)
-  cpu=$(top -b -n1 | fgrep "Cpu(s)" | tail -1 | awk -F 'id,' '{split($1, vs, ",");v=vs[length(vs)];sub(/\s+/, "" ,v);sub(/\s+/, "", v);printf "%d", 100-v;}')%
+  cpu=$(top -b -n1 | fgrep "Cpu(s)" | tail -1|tr ',' ' '|awk '{print $8}')%
   mem=$(free -m | awk -F '[ :]+' 'NR==2{printf "%d", ($3)/$2*100}')%
   disk=$(df -h | grep /$ | awk '{print $5}')
   opt "${START}${PURPLE}mcheck system info. ${END}"
